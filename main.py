@@ -39,25 +39,33 @@ def fullscreen():
     current_position_gps = (db.reference("current_position_gps")).order_by_key().get()
     # print(f"lon: {float(current_position_gps['lon'])}, lat: {float(current_position_gps['lat'])}  ")
     m = folium.Map(
+        tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attr='Esri.WorldImagery',
         # location=[50.5740, 127.6601],
         location=[float(current_position_gps['lat']), float(current_position_gps['lon'])],
         zoom_start=18,
     )
 
+    folium.Marker(
+        location=[float(current_position_gps['lat']), float(current_position_gps['lon'])],
+        popup='Текущая позиция Патруля',
+    ).add_to(m)
+
+    # folium.TileLayer(
+    #     tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    #     name='Esri.WorldImagery',
+    #     show=True,
+    #     attr='Esri.WorldImagery').add_to(m)
     folium.TileLayer(
-        tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        name='Esri.WorldImagery',
-        show=True,
-        attr='Esri.WorldImagery').add_to(m)
-    folium.TileLayer('openstreetmap',
-                     show=False,
-                     ).add_to(m)
+        tiles='openstreetmap',
+        name='схема',
+        show=False).add_to(m)
     # folium.TileLayer('stamenterrain', attr="stamenterrain").add_to(m)
     # folium.TileLayer('stamenwatercolor', attr="stamenwatercolor").add_to(m)
 
 
 
-    formatter = "function(num) {return L.Util.formatNum(num, 4);};"
+    formatter = "function(num) {return L.Util.formatNum(num, 6);};"
 
     draw = Draw(
         draw_options={
