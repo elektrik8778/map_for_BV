@@ -88,7 +88,7 @@ def fullscreen():
     folium.LayerControl().add_to(m)
 
     # inject html into the map html
-    # m.get_root().html.add_child(folium.Element(texts.element_1))
+    m.get_root().html.add_child(folium.Element(texts.element_1))
 
 
     return m.get_root().render()
