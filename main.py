@@ -4,7 +4,7 @@
 # m.save("map1.html")
 
 from flask import Flask, render_template_string
-
+import jinja2
 import folium
 from folium.plugins import MousePosition
 from folium.plugins import Draw
@@ -31,6 +31,7 @@ default_app = firebase_admin.initialize_app(cred_object, {
 
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 @app.route("/")
@@ -41,8 +42,8 @@ def fullscreen():
     m = folium.Map(
         tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         attr='Esri.WorldImagery',
-        # location=[50.5740, 127.6601],
-        location=[float(current_position_gps['lat']), float(current_position_gps['lon'])],
+        location=[50.573044, 127.658892],
+        #location=[float(current_position_gps['lat']), float(current_position_gps['lon'])],
         zoom_start=18,
     )
 
@@ -96,7 +97,7 @@ def fullscreen():
     folium.LayerControl().add_to(m)
 
     # inject html into the map html
-    m.get_root().html.add_child(folium.Element(texts.element_1))
+    m.get_root().html.add_child(folium.Element(texts.element_alt))
 
 
     return m.get_root().render()
